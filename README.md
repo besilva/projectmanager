@@ -12,7 +12,8 @@ Git help:
 
 1 - clone the repo
 
-git clone 
+git clone https://github.com/besilva/projectmanager.git
+
 2 - switch to your branch
 
 git checkout branchname

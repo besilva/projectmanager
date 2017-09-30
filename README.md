@@ -1,36 +1,110 @@
-# [Start Bootstrap](http://startbootstrap.com/) - [SB Admin 2](http://startbootstrap.com/template-overviews/sb-admin-2/)
-[![CDNJS](https://img.shields.io/cdnjs/v/startbootstrap-sb-admin-2.svg)](https://cdnjs.com/libraries/startbootstrap-sb-admin-2)
+# projectmanager
+Software para planejamento de projetos
+Developers:
 
-[SB Admin 2](http://startbootstrap.com/template-overviews/sb-admin-2/) is an open source, admin dashboard template for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).
+Always pull before start coding. Just push on the designated branch. Check the issues page.
 
-## Getting Started
+Using: Python 2.7, Flask, PostgreSQL, Psycopg2.
 
-To begin using this template, choose one of the following options to get started:
-* [Download the latest release on Start Bootstrap](http://startbootstrap.com/template-overviews/sb-admin-2/)
-* Clone the repo: `git clone https://github.com/BlackrockDigital/startbootstrap-sb-admin-2.git`
-* Fork the repo
+Get Started:
 
-## Using the Source Files
+Git help:
 
-After cloning the repo take a look at the `gulpfile.js` and check out the tasks available:
-* `gulp` The default task will compile the LESS and JS into the `dist` directory and minify the output, and it will copy all vendor libraries from `bower_components` into the `vendor` directory
-* `gulp dev` The dev task will serve up a local version of the template and will watch the LESS, JS, and HTML files for changes and reload the browser windo automatically
+1 - clone the repo
 
-To update dependencies, run `bower update` and then run `gulp copy` to copy the updated dependencies into the `vendor` directory
+git clone https://github.com/besilva/projectmanager.git
 
-## Bugs and Issues
+2 - switch to your branch
 
-Have a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-sb-admin-2/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/sb-admin-2/).
+git checkout branchname
 
-## Creator
+3 - do your magic and add then to the project when they're ready
 
-Start Bootstrap was created by and is maintained by **[David Miller](http://davidmiller.io/)**, Owner of [Blackrock Digital](http://blackrockdigital.io/).
+git add .
 
-* https://twitter.com/davidmillerskt
-* https://github.com/davidtmiller
+4 - commit your changes
 
-Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
+git commit -m "useful message about your changes"
 
-## Copyright and License
+5 - update your clone and send your changes to the server
 
-Copyright 2013-2016 Blackrock Digital LLC. Code released under the [MIT](https://github.com/BlackrockDigital/startbootstrap-sb-admin-2/blob/gh-pages/LICENSE) license.
+git pull git push
+
+Install/Configure/Execute:
+
+Install PostgreSQL:
+
+sudo apt-get install postgresql
+
+Create/Configure Database:
+
+CREATE DATABASE emotional-dev On config.py change the SQLALCHEMY_DATABASE_URI property to match your own postgres credentials.
+
+Create an virtual env:
+
+sudo pip install virtualenv virtualenv venv
+
+Install requirements:
+
+cd emotional/site . venv/bin/activate pip install -r requirements.txt
+
+Execute:
+
+python run.py
+
+Branchs/Documentation:
+
+Check issues page to see what to do or submit new issues. Discuss on the issue page. Use the branch designated there. After you finish, ALWAYS reply to mentioned issue including a detailed explanation of your changes (e.g., Issue 15).
+
+Branch Names
+
+project: closest to master
+
+lab: new ideas
+
+lab-name: new big ideas
+
+yourname: your own branch/personal tests
+
+Others/General:
+
+branch name = AWP0000
+
+A -> action
+
+W -> where/what
+
+P -> priority
+
+0000 -> serial/increment
+
+Rules & Understanding:
+
+Actions:
+  C -> create
+  M -> modify
+  R -> remove
+  I -> improve
+  F -> fix bug
+  
+Where/what:
+  D -> database
+  S -> styles
+  C -> code 
+  L -> logic
+  E -> estruture 
+  A -> analisys 
+
+Priorit:
+  N -> none/neutral
+  S -> somewhat important 
+  I -> important
+  U -> urgent
+Examples
+
+1) UDU0019
+    Legend: 19th alteration on the database to include a new table as soon as possible
+    On Docs: UDU0019/URGENT - update the database to add a log table. Use branch UDU0019. 
+2) ILN0001
+    Legend: first logic improvement 
+    On Docs: ILN0001 - improve logic on report user method. Class: userController

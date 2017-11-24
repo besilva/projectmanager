@@ -81,7 +81,9 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
         var sql = "Select * from " + getTabela() + " where 1=1"
         sql += geraFiltro(exemplar)
         val comando = conexao.prepareStatement(sql)
-        val rs = comando.executeQuery()
+        var stmt =  this.preencherFiltro(comando, exemplar)
+        println(stmt.toString())
+        val rs = stmt.executeQuery()
         return montaModelo(rs)
     }
 
@@ -98,6 +100,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
     abstract fun getTabela():String
     abstract fun colunas():String
     abstract fun preencher(stmt: PreparedStatement, objeto: T) : PreparedStatement
+    abstract fun preencherFiltro(stmt: PreparedStatement, objeto: T) : PreparedStatement
     abstract fun montaModelo(rs: ResultSet): MutableList<T>
     abstract fun geraFiltro(exemplar: T): String
 }

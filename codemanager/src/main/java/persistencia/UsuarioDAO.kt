@@ -22,6 +22,7 @@ import java.util.List
 
 
      override fun preencher(stmt: PreparedStatement, objeto: Usuario) : PreparedStatement {
+        var i = 1
         when {
             objeto.nome != null -> stmt.setString(1, objeto.nome)
             else -> stmt.setNull(1, Types.VARCHAR)
@@ -57,10 +58,34 @@ import java.util.List
 
      override fun geraFiltro(exemplar : Usuario): String {
          var filtro : String = ""
-         filtro += if (exemplar.nome != null)  " AND nome LIKE %" + exemplar.nome + "% " else ""
-         filtro += if (exemplar.email != null)  " AND email LIKE %" + exemplar.nome + "% " else ""
-         filtro += if (exemplar.senha != null)  " AND senha LIKE %" + exemplar.nome + "% " else ""
+         filtro += if (exemplar.nome != null)  " AND nome LIKE ? " else ""
+         filtro += if (exemplar.email != null)  " AND email LIKE ? " else ""
+         filtro += if (exemplar.senha != null)  " AND senha LIKE ? " else ""
+
         return filtro
      }
 
+     override fun preencherFiltro(stmt: PreparedStatement, objeto: Usuario): PreparedStatement {
+         var i = 1
+         if (objeto.nome != null) stmt.setString(i++,"%"+objeto.nome+ "%")
+         println(i)
+         if (objeto.email != null) stmt.setString(i++,"%"+objeto.email+ "%")
+         if (objeto.senha != null) stmt.setString(i++,"%"+objeto.senha+ "%")
+         return stmt
+     }
+     fun login(email: String?, senha: String? ): Boolean{
+         val conexao = super.abreConexao()
+         val sql = "Select * from usuario where email LIKE ? AND senha LIKE ?"
+         val stmt = conexao.prepareStatement(sql)
+         when{
+            email != null -> stmt.setString(1,email )
+             else -> return false
+         }
+         when{
+             senha != null -> stmt.setString(1,senha )
+             else -> return false
+         }
+         val rs = stmt.executeQuery()
+         return rs.next()
+     }
 }

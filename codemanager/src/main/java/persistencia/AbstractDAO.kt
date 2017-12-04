@@ -28,10 +28,12 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
 
             val parametros = this.colunas().split(",")
             for (i in parametros.indices) {
-                sql += parametros[i] + "?, "
+                sql += parametros[i] + "=?,"
 
             }
-            sql = sql.substring(0, sql.length - 1) + " where codigo =" + objeto.codigo
+
+            sql = sql.substring(0, sql.length - 1) + " where codigo =?"
+            print(sql)
             val comando = conexao.prepareStatement(sql)
             stmt = preencher(comando, objeto)
         }else{
@@ -55,8 +57,11 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
         val conexao = abreConexao()
         val sql = "Delete from " + getTabela() + " where codigo=?"
         val comando = conexao.prepareStatement(sql)
-        comando.execute()
-
+        if (objeto.isPersistente()) {
+            comando.setInt(1, objeto.codigo!!)
+            comando.execute()
+        }
+        conexao.close()
     }
 
     override fun seleciona(): List<T> {
@@ -64,6 +69,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
         var sql = "Select * from " + getTabela()
         val comando = conexao.prepareStatement(sql)
         val rs = comando.executeQuery()
+        conexao.close()
         return this.montaModelo(rs).toList()
     }
 
@@ -73,6 +79,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
         val comando = conexao.prepareStatement(sql)
         comando.setInt(1, codigo)
         val rs = comando.executeQuery()
+        conexao.close()
         return this.montaModelo(rs).get(0)
     }
 
@@ -82,8 +89,8 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
         sql += geraFiltro(exemplar)
         val comando = conexao.prepareStatement(sql)
         var stmt =  this.preencherFiltro(comando, exemplar)
-        println(stmt.toString())
         val rs = stmt.executeQuery()
+        conexao.close()
         return montaModelo(rs)
     }
 
@@ -94,6 +101,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
         comando.setInt(1,limit)
         comando.setInt(2, offset)
         val rs = comando.executeQuery()
+        conexao.close()
         return montaModelo(rs)
     }
 

@@ -4,6 +4,7 @@ import spark.kotlin.*
 import modelo.Usuario
 import persistencia.UsuarioDAO
 import rotas.*
+
 import spark.*
 import spark.staticfiles.StaticFilesFolder
 import java.net.URL
@@ -13,30 +14,49 @@ fun main(args: Array<String>) {
 
 
     val spark: Http = ignite()
+    val json: ResponseTransformer = JsonTransformer()
 
+    //filtagrem de Usuarios
+    spark.post("/filtraUsuarios"){
+        val rota  = FiltaUsuarios()
+
+        json.render(rota.handle(request, response))
+    }
 
     // fazer login
-    spark.post("/verifica"){
-        val verifica  = VerificaLogin()
-        val logado = verifica.handle(request, response) as Boolean
+    spark.get("/verifica"){
+
+        //val logado = verifica.handle(request, response) as Boolean
+
+
+        val logado =  VerificaLogin().handle(request, response) as Boolean
         if (logado){
-            redirect("/index")
+
+            "ok"
         }else{
-            redirect("/login.html")
+            response.status(401)
+            response.body("Usuario ou senha invalidos")
         }
 
 
 
     }
-    spark.get("/hello"){
+    //listagem de Usuarios
+    spark.get("/listaUsuarios"){
         val rota: Route = ListaUsuarios()
-        val json: ResponseTransformer = JsonTransformer()
+
 
         json.render(rota.handle(request, response))
     }
 
-    spark.get("index"){
-
-
+    spark.post("/criaUsuario"){
+        CriaUsuario().handle(request, response)
     }
+    spark.post("/deletaUsuario"){
+        DeletaUsuario().handle(request,response)
+    }
+
+
+
 }
+

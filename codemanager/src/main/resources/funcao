@@ -13,3 +13,10 @@ RAISE EXCEPTION 'Somente usuarios da empresa desenvolvedora podem criar tarefas'
 end if;
 END;
 $$ LANGUAGE 'plpgsql';
+
+
+CREATE TRIGGER integridade
+BEFORE INSERT
+ON tarefa
+FOR EACH ROW
+EXECUTE PROCEDURE gerencia()

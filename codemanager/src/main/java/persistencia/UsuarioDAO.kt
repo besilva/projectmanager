@@ -14,10 +14,9 @@ import java.util.List
  class UsuarioDAO: AbstractDAO<Usuario>{
     constructor()
 
-     override fun colunas(): String =  "nome, email, senha"
+     override fun colunas(): String =  "nome, email, senha, empresa_codigo"
 
-
-
+     override fun juncao(): String = " inner join Empresa e on e.codigo = usuario.empresa_codigo"
      override fun getTabela(): String = "usuario"
 
 
@@ -27,6 +26,7 @@ import java.util.List
             objeto.nome != null -> stmt.setString(1, objeto.nome)
             else -> stmt.setNull(1, Types.VARCHAR)
         }
+
         when {
             objeto.email != null -> stmt.setString(2, objeto.email )
             else ->   stmt.setNull(2, Types.VARCHAR)
@@ -35,8 +35,12 @@ import java.util.List
             objeto.senha != null -> stmt.setString(3,objeto.senha)
             else ->  stmt.setNull(3, Types.VARCHAR)
         }
+         when{
+             objeto.empresa_codigo != null -> stmt.setInt(4,objeto.empresa_codigo!!)
+             else ->  stmt.setNull(4, Types.VARCHAR)
+         }
         if (objeto.isPersistente()){
-            stmt.setInt(4, objeto.codigo!!)
+            stmt.setInt(5, objeto.codigo!!)
         }
         return stmt
 
@@ -50,6 +54,7 @@ import java.util.List
              user.email = rs.getString("email")
              user.senha = rs.getString("senha")
              user.codigo = rs.getInt("codigo")
+             user.empresa_codigo = rs.getInt("empresa_codigo")
              lista.add(user)
 
          }
@@ -62,6 +67,8 @@ import java.util.List
          filtro += if (exemplar.nome != null)  " AND nome LIKE ? " else ""
          filtro += if (exemplar.email != null)  " AND email LIKE ? " else ""
          filtro += if (exemplar.senha != null)  " AND senha LIKE ? " else ""
+         filtro += if (exemplar.empresa_codigo != null)  " AND empresa_codigo=? " else ""
+
 
         return filtro
      }
@@ -71,6 +78,7 @@ import java.util.List
          if (objeto.nome != null) stmt.setString(i++,"%"+objeto.nome+ "%")
          if (objeto.email != null) stmt.setString(i++,"%"+objeto.email+ "%")
          if (objeto.senha != null) stmt.setString(i++,"%"+objeto.senha+ "%")
+         if (objeto.empresa_codigo != null) stmt.setInt(i++, objeto.empresa_codigo!!)
          return stmt
      }
      fun login(email: String, senha: String ): Boolean{

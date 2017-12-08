@@ -26,6 +26,8 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
         if (objeto.isPersistente()){
             var sql = "UPDATE  " + this.getTabela() + " SET "
 
+
+
             val parametros = this.colunas().split(",")
             for (i in parametros.indices) {
                 sql += parametros[i] + "=?,"
@@ -66,7 +68,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
 
     override fun seleciona(): List<T> {
         val  conexao = this.abreConexao()
-        var sql = "Select * from " + getTabela()
+        var sql = "Select * from " + getTabela() + this.juncao()
         val comando = conexao.prepareStatement(sql)
         val rs = comando.executeQuery()
         conexao.close()
@@ -75,7 +77,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
 
     override fun seleciona(codigo: Int): T {
         val  conexao = this.abreConexao()
-        var sql = "Select * from " + getTabela() + " where codigo=?"
+        var sql = "Select * from " + getTabela()+ this.juncao() + " where codigo=?"
         val comando = conexao.prepareStatement(sql)
         comando.setInt(1, codigo)
         val rs = comando.executeQuery()
@@ -85,7 +87,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
 
     override fun seleciona(exemplar: T):List<T> {
         val  conexao = this.abreConexao()
-        var sql = "Select * from " + getTabela() + " where 1=1"
+        var sql = "Select * from " + getTabela() + this.juncao() +" where 1=1"
         sql += geraFiltro(exemplar)
         val comando = conexao.prepareStatement(sql)
         var stmt =  this.preencherFiltro(comando, exemplar)
@@ -96,7 +98,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
 
     override fun seleciona(offset: Int, limit: Int): List<T> {
         val  conexao = this.abreConexao()
-        var sql = "Select * from " + getTabela() + " LIMIT ? OFFSET ?"
+        var sql = "Select * from " + getTabela() + this.juncao() + " LIMIT ? OFFSET ?"
         val comando = conexao.prepareStatement(sql)
         comando.setInt(1,limit)
         comando.setInt(2, offset)
@@ -104,7 +106,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
         conexao.close()
         return montaModelo(rs)
     }
-
+    abstract fun juncao(): String
     abstract fun getTabela():String
     abstract fun colunas():String
     abstract fun preencher(stmt: PreparedStatement, objeto: T) : PreparedStatement

@@ -9,8 +9,8 @@ import spark.Route
 class DeletaUsuario: Route{
     override fun handle(p0: Request?, p1: Response?): Any {
         val user = Usuario()
-        user.codigo = p0?.queryMap("codigo")?.value()?.toInt()
-        println(user.codigo)
+        user.codigo = p0?.params(":id")?.toInt()
+
         return UsuarioDAO().remove(user)
     }
 }

@@ -9,11 +9,14 @@ import persistencia.UsuarioDAO
 
 class VerificaLogin(): Route{
     override fun handle(p0: Request?, p1: Response?): Any {
+
         p1?.header("Access-Control-Allow-Origin", "*")
         val email = p0?.queryMap("login")?.value()
         val senha = p0?.queryMap("senha")?.value()
 
 
         return UsuarioDAO().login(email!!,senha!!)
+
+
     }
 }

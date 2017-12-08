@@ -52,7 +52,7 @@ fun main(args: Array<String>) {
     spark.post("/criaUsuario"){
         CriaUsuario().handle(request, response)
     }
-    spark.post("/deletaUsuario"){
+    spark.delete("/deletaUsuario/:id"){
         DeletaUsuario().handle(request,response)
     }
 

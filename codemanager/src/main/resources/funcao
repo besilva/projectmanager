@@ -1,0 +1,15 @@
+CREATE or replace FUNCTION gerencia() RETURNS trigger AS
+$$
+DECLARE
+    x int;
+    y int;
+BEGIN
+select into x u.empresa_codigo from tarefa t inner join etapa e on e.codigo = t.etapa_codigo
+inner join projeto p on p.codigo = e.projeto_codigo
+inner join usuario u on p.usuario_codigo=u.codigo ;
+select into y u.empresa_codigo from usuario where codigo = new.codigo;
+if x!=y then
+RAISE EXCEPTION 'Somente usuarios da empresa desenvolvedora podem criar tarefas';
+end if;
+END;
+$$ LANGUAGE 'plpgsql';

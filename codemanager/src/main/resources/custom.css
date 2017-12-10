@@ -1,0 +1,26 @@
+.box-login {
+    width: 300px;
+    border: solid rgb(161, 158, 158) 1px;
+    height: 400px;
+    margin-top: 50px;
+    border-radius: 20px;
+}
+
+.login-head {
+    text-align: center;
+    width: 100%;
+    background-color: rgb(161, 158, 158);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    height: 45px;
+    font-size: 25px;
+    margin-bottom: 25px;
+}
+
+.login-head p {
+    padding-top: 5px;
+}
+
+.input-login {
+    width: 275px;
+}

@@ -1,13 +1,12 @@
 package modelo
 
+import java.time.LocalTime
 import java.util.*
 import javax.print.attribute.IntegerSyntax
 
 interface Modelo{
         var codigo: Int?
-        fun setAtualizacao(updated: Locale)
-        // deve refletir quando o registro foi inserido ou atualizado
-        fun getAtualizacao()
+        var horaAtualizacao: LocalTime
         fun isPersistente() = this.codigo != null
 
 

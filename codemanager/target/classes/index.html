@@ -1,16 +1,176 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 
 <head>
-    <meta http-equiv="refresh" content="0;url=pages/index.html">
-    <title>Project Manager</title>
-    <script language="javascript">
-        window.location.href = "pages/index.html"
-    </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Code Manager </title>
+
+
+    <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./estilo.css" rel="stylesheet">
+
 </head>
 
 <body>
-    Go to <a href="pages/index.html">/pages/index.html</a>
+
+
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Projetos</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+        <div class="col-lg-12">
+            <h2 class="page-header">South Coders</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+
+            <div class="projeto  projeto">
+                <div class="projeto-cabecalho projeto-sucesso">
+                    <a class="projeto-details" href="#">
+                        <p class="titulo ">Emotional</p>
+
+
+                        <hr class="linha">
+                    </a>
+                </div>
+                <p> Tipo: Mobile/Web <span class="glyphicon glyphicon-phone"></span></p>
+                <p> Linguagem: Python</p>
+                <p>Data de Entrega: Jan/2018</p>
+                <p>Cliente: South Coders</p>
+                <p>Progresso: 25%</p>
+                <p>
+                    <a href="#" class="projeto-details">
+                        <span class=" projeto-plus glyphicon glyphicon-plus "></span>
+                    </a>
+                </p>
+                <p class="projeto-mais ">Horas orçadas totais:500 </p>
+                <p class="projeto-mais ">Horas orçadas das tarefas completas:125</p>
+                <p class="projeto-mais ">Horas usadas nas tarefas completas:120</p>
+                <p class="projeto-mais "> Folga: 5 horas</p>
+                <p class="projeto-mais ">
+                    <a href="#" class="projeto-details">
+                        <span class="glyphicon glyphicon-minus projeto-minus"></span>
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+        <div class="col-lg-4 ">
+            <div class="projeto ">
+                <div class="projeto-cabecalho projeto-aviso ">
+                    <a class="projeto-details " href="# ">
+                        <p class="titulo ">UFSC Website</p>
+                        <hr class="linha ">
+                    </a>
+                </div>
+                <p> Tipo: Web <span class="glyphicon glyphicon-globe "></span></p>
+                <p> Linguagem: PHP</p>
+                <p>Data de Entrega: Nov/2017</p>
+                <p>Cliente: UFSC - Florianopolis</p>
+                <p>Progresso: 25%</p>
+                <p class="projeto-mais ">Horas orçadas totais:500 </p>
+                <p class="projeto-mais ">Horas orçadas das tarefas completas:125</p>
+                <p class="projeto-mais ">Horas usadas nas tarefas completas:125</p>
+                <p class="projeto-mais "> Folga: 0 horas</p>
+
+            </div>
+        </div>
+        <div class="col-lg-4 ">
+            <div class="projeto ">
+                <div class="projeto-cabecalho projeto-perigo ">
+                    <a class="projeto-details " href="# ">
+                        <p class="titulo ">Project Manager</p>
+                        <hr class="linha ">
+                    </a>
+                </div>
+                <p> Tipo: Web <span class="glyphicon glyphicon-globe "></span></p>
+                <p> Linguagem: Kotlin</p>
+                <p>Data de Entrega: Jan/2018</p>
+                <p>Cliente: South Coders</p>
+                <p>Progresso: 20%</p>
+                <p class="projeto-mais ">Horas orçadas totais:700 </p>
+                <p class="projeto-mais ">Horas orçadas das tarefas completas:140</p>
+                <p class="projeto-mais ">Horas usadas nas tarefas completas:150</p>
+                <p class="projeto-mais "> Folga: -10 horas</p>
+
+            </div>
+        </div>
+    </div>
+    <div class="fixed-bottom ">
+        <div class="continer-fluid " id="legenda ">
+            <div class="col-lg-3 ">
+                <div class="projeto-sucesso legenda-amostra "> </div>
+                <p class="legenda-texto ">Adiantado/ Bem orçado</p>
+            </div>
+            <div class="col-lg-3 ">
+                <div class="projeto-aviso legenda-amostra "> </div>
+                <p class="legenda-texto ">No prazo/ Sem folga</p>
+            </div>
+            <div class="col-lg-3 ">
+                <div class="projeto-perigo legenda-amostra "> </div>
+                <p class="legenda-texto ">Atrasado/ Mal orçado</p>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
+
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="./bootstrap/js/bootstrap.min.js ">
+    </script>
+
+
+    <script>
+        $(".projeto-plus ").on("click ", function() {
+            var projeto = this.closest("div.projeto ");
+            projeto.style.height = "380px ";
+            var textos = projeto.children;
+            for (i = 0; i < textos.length; i++) {
+                if (textos[i].classList.contains("projeto-mais")) {
+                    textos[i].classList.remove("projeto-mais");
+                    textos[i].classList.add("projeto-visivel");
+                }
+            }
+            this.closest("p").classList.add("projeto-mais");
+        });
+
+        $(".projeto-minus ").on("click ", function() {
+            var projeto = this.closest("div.projeto ");
+            projeto.style.height = "225px ";
+            var textos = projeto.children;
+            for (i = 0; i < textos.length; i++) {
+
+                if (textos[i].classList.contains("projeto-mais")) {
+
+                    textos[i].classList.remove("projeto-mais");
+                    textos[i].classList.add("projeto-visivel");
+
+                } else if (textos[i].classList.contains("projeto-visivel")) {
+                    textos[i].classList.remove("projeto-visivel");
+                    textos[i].classList.add("projeto-mais");
+                }
+
+            }
+            this.closest("p").classList.add("projeto-mais");
+        });
+    </script>
 </body>
 
 </html>

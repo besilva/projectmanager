@@ -1,11 +1,18 @@
 package modelo
 
 import jdk.net.SocketFlow
+import java.time.LocalDateTime
 import java.time.LocalTime
 
-class Projeto(var nome: String?, var descricao: String?, var linguagem: Linguagem?, var Status: Status?, var totalHoras:Int = 0, var usuarioCodigo: Int,
-              var empresaCodigo: Int, var criador: Usuario, var cliente: Empresa,
-              override var codigo: Int?,  override var horaAtualizacao: LocalTime) : Modelo{
+class Projeto(var nome: String? = null, var descricao: String? = null, var linguagem: Linguagem? = null, var usuarioCodigo: Int? = null,
+              var empresaCodigo: Int? = null, var criador: Usuario? = null, var cliente: Empresa = Empresa(),
+              override var codigo: Int? = null, override var horaAtualizacao: LocalDateTime = LocalDateTime.now(), var etapas: Array<Etapa> = emptyArray<Etapa>()) : Modelo{
+    var status: Status
+
+    init {
+        status = Status.Iniciado
+
+    }
 }
 
 enum class Linguagem {
@@ -16,18 +23,19 @@ enum class Linguagem {
     Ruby;
 
     companion object {
-        fun Gera(num: Int) = Tipo.values().first { it.ordinal == num }
+        fun Gera(num: Int) = Linguagem.values().first { it.ordinal == num }
     }
 
 }
 enum class Status {
+    Criado,
     Iniciado,
     EmDesenvolvimento,
     Manutencao,
     Finalizado;
 
     companion object {
-        fun Gera(num: Int) = Tipo.values().first { it.ordinal == num }
+        fun Gera(num: Int) = Status.values().first { it.ordinal == num }
     }
 
 }

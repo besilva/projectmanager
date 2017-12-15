@@ -1,18 +1,16 @@
 package persistencia
 
 import modelo.Usuario
-import java.lang.reflect.Type
-import java.sql.Connection
-import java.sql.DriverManager
+
 import java.sql.PreparedStatement
 import java.sql.ResultSet
-import java.sql.SQLType
-import java.sql.Statement
+
 import java.sql.Types
-import java.util.List
+
 
  class UsuarioDAO: AbstractDAO<Usuario>{
     constructor()
+
 
      override fun colunas(): String =  "nome, email, senha, empresa_codigo"
 
@@ -42,6 +40,7 @@ import java.util.List
         if (objeto.isPersistente()){
             stmt.setInt(5, objeto.codigo!!)
         }
+
         return stmt
 
      }

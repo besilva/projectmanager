@@ -8,8 +8,13 @@ import java.sql.ResultSet
 import java.sql.SQLType
 import java.sql.Statement
 import java.sql.Types
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 import kotlin.collections.List
+import java.time.LocalTime
+
+
 
 abstract class AbstractDAO<T: Modelo>: IDAO<T>{
     private val USUARIO = "postgres"
@@ -18,6 +23,14 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
     protected fun abreConexao():Connection{
         val conexao = DriverManager.getConnection(URL, USUARIO, SENHA)
         return conexao
+    }
+
+    fun toSqlTime(localTime: LocalDateTime): java.sql.Timestamp {
+        return java.sql.Timestamp.valueOf(localTime)
+    }
+
+    fun toLocalTime(time : java.sql.Timestamp): LocalDateTime {
+        return time.toLocalDateTime()
     }
 
     override fun persiste(objeto: T) {
@@ -35,9 +48,9 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
             }
 
             sql = sql.substring(0, sql.length - 1) + " where codigo =?"
-            print(sql)
             val comando = conexao.prepareStatement(sql)
             stmt = preencher(comando, objeto)
+
         }else{
             var sql = ("INSERT INTO " + this.getTabela() + " (codigo,"+ colunas()+ ") ")
             var sqlFim = " VALUES (Default,"
@@ -50,8 +63,16 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
             sql += sqlFim
             val comando = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
             stmt =  this.preencher(comando, objeto)
+
+
         }
         stmt.executeUpdate()
+        val rs: ResultSet = stmt.generatedKeys
+
+        if(rs.next()) {
+            objeto.codigo = rs.getInt("codigo")
+            //println("Codigo gerado: ${objeto.codigo}" )
+        }
         conexao.close()
     }
 
@@ -68,7 +89,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
 
     override fun seleciona(): List<T> {
         val  conexao = this.abreConexao()
-        var sql = "Select * from " + getTabela() + this.juncao()
+        var sql = "Select * from " + getTabela()
         val comando = conexao.prepareStatement(sql)
         val rs = comando.executeQuery()
         conexao.close()
@@ -77,7 +98,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
 
     override fun seleciona(codigo: Int): T {
         val  conexao = this.abreConexao()
-        var sql = "Select * from " + getTabela()+ this.juncao() + " where codigo=?"
+        var sql = "Select * from " + getTabela() + " where codigo=?"
         val comando = conexao.prepareStatement(sql)
         comando.setInt(1, codigo)
         val rs = comando.executeQuery()
@@ -87,7 +108,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
 
     override fun seleciona(exemplar: T):List<T> {
         val  conexao = this.abreConexao()
-        var sql = "Select * from " + getTabela() + this.juncao() +" where 1=1"
+        var sql = "Select * from " + getTabela() +" where 1=1"
         sql += geraFiltro(exemplar)
         val comando = conexao.prepareStatement(sql)
         var stmt =  this.preencherFiltro(comando, exemplar)
@@ -98,7 +119,7 @@ abstract class AbstractDAO<T: Modelo>: IDAO<T>{
 
     override fun seleciona(offset: Int, limit: Int): List<T> {
         val  conexao = this.abreConexao()
-        var sql = "Select * from " + getTabela() + this.juncao() + " LIMIT ? OFFSET ?"
+        var sql = "Select * from " + getTabela() +" LIMIT ? OFFSET ?"
         val comando = conexao.prepareStatement(sql)
         comando.setInt(1,limit)
         comando.setInt(2, offset)

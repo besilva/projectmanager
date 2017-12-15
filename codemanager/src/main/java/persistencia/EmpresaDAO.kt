@@ -2,12 +2,13 @@ package persistencia
 
 import modelo.Empresa
 import modelo.Tipo
+import modelo.Usuario
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Types
 
 class EmpresaDAO() : AbstractDAO<Empresa>(){
-    override fun colunas(): String = "nome"
+    override fun colunas(): String = "nome, cnpj, tipo"
     override fun getTabela(): String = "empresa"
     override fun juncao(): String = ""
     override fun geraFiltro(exemplar: Empresa): String {
@@ -21,7 +22,7 @@ class EmpresaDAO() : AbstractDAO<Empresa>(){
         var i=1
         if (objeto.nome != null) stmt.setString(i++, "%" + objeto.nome + "%")
         if (objeto.CNPJ != null) stmt.setString(i++, "%" + objeto.CNPJ + "%")
-        if (objeto.tipo != null) stmt.setInt(i++, objeto.tipo!!.numero)
+        if (objeto.tipo != null) stmt.setInt(i++, objeto.tipo!!.ordinal)
 
         return stmt
     }
@@ -50,13 +51,22 @@ class EmpresaDAO() : AbstractDAO<Empresa>(){
             else -> stmt.setNull(2, Types.VARCHAR)
         }
         when {
-            objeto.tipo != null -> stmt.setInt(3, objeto.tipo!!.numero)
+            objeto.tipo != null -> stmt.setInt(3, objeto.tipo!!.ordinal)
             else -> stmt.setNull(3, Types.VARCHAR)
         }
         if (objeto.isPersistente()){
             stmt.setInt(4, objeto.codigo!!)
         }
         return stmt
+    }
+    fun login(email: String, senha: String ): Boolean{
+        val conexao = super.abreConexao()
+        val sql = "Select * from empresa where email = ?  AND senha = ?"
+        val stmt = conexao.prepareStatement(sql)
+        stmt.setString(1,email )
+        stmt.setString(2,senha )
+        val rs = stmt.executeQuery()
+        return rs.next()
     }
 
 

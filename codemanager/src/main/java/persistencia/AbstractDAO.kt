@@ -17,9 +17,9 @@ import java.time.LocalTime
 
 
 abstract class AbstractDAO<T: Modelo>: IDAO<T>{
-    private val USUARIO = "postgres"
-    private val SENHA = "teste123"
-    private val URL = "jdbc:postgresql://localhost/trello"
+    private val USUARIO = "" //your db user
+    private val SENHA = "" //your db user password
+    private val URL = "" //connection url
     protected fun abreConexao():Connection{
         val conexao = DriverManager.getConnection(URL, USUARIO, SENHA)
         return conexao
